@@ -15,7 +15,7 @@ const userSchema = new Schema({
     age: { type: Number, required: true },
     preferences: { type: String, required: true },
     favoriteMovies: { type: [movieSchema], default: [] },
-    gender: { type: String, required: true },
+    gender: { type: String, required: false },
     createdAt: { type: Date, default: Date.now },
 });
 
