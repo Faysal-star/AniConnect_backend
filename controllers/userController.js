@@ -1,12 +1,12 @@
 import User from '../models/User.js';
 
 export async function updateUser(req, res) {
-  const { userId, email, fullName, age, preferences, gender } = req.body;
+  const { uid, email, fullName, age, preferences, gender } = req.body;
   try{
-    console.log(userId, email, fullName, age, preferences, gender);
-    const user = await User.findOne({ uid: userId });
+    console.log(uid, email, fullName, age, preferences, gender);
+    const user = await User.findOne({ uid: uid });
     if (!user) {
-      const newUser = new User({ uid: userId, email: email, fullname: fullName, age: age, preferences: preferences, gender: gender });
+      const newUser = new User({ uid: uid, email: email, fullname: fullName, age: age, preferences: preferences, gender: gender });
       await newUser.save();
       return res.status(201).json(newUser);
     }
