@@ -26,7 +26,7 @@ const chatController = {
                 User's Favorite Movies: ${favoriteMovies.join(', ')}
                 User's Movie Comments: ${moviePosts.map(p => `${p.title}: ${p.comment}`).join('; ')}
 
-                Based on this information, recommend highest 3 movies. 
+                Based on this information, recommend 5 to 6 movies. 
                 Return ONLY a JSON array of movie titles, like this format:
                 ["Movie Title 1", "Movie Title 2", "Movie Title 3"]
             `;
