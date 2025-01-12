@@ -1,26 +1,40 @@
 import Post from '../models/Post.js';
 
-export async function createPost(req, res) {
-  const { userId, movie, content } = req.body;
-  try {
-    const post = new Post({ user: userId, movie, content });
-    await post.save();
-    res.json(post);
-  } catch (err) {
-    res.status(500).json({ error: 'Server Error' });
-  }
-}
+const postController = {
+    createPost: async (req, res) => {
+        try {
+            const { uid, movie, content } = req.body;
 
-export async function getPosts(req, res) {
-  try {
-    const posts = await Post.find()
-      .populate('user', 'fullName')
-      .sort({ createdAt: -1 });
-    res.json(posts);
-  } catch (err) {
-    res.status(500).json({ error: 'Server Error' });
-  }
-}
+            const newPost = new Post({
+                uid,
+                movie: {
+                    id: movie.id,
+                    title: movie.title,
+                    poster_path: movie.poster_path,
+                    release_date: movie.release_date,
+                    rating: movie.rating
+                },
+                content
+            });
 
-export default { createPost, getPosts };
+            await newPost.save();
+            res.status(201).json(newPost);
+        } catch (error) {
+            res.status(500).json({ message: 'Error creating post', error: error.message });
+        }
+    },
+
+    // Get all posts
+    getPosts: async (req, res) => {
+        try {
+            const posts = await Post.find()
+                .sort({ createdAt: -1 });
+            res.json(posts);
+        } catch (error) {
+            res.status(500).json({ message: 'Error fetching posts', error: error.message });
+        }
+    }
+};
+
+export default postController;
     
