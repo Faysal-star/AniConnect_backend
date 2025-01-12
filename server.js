@@ -9,6 +9,7 @@ import movieRoutes from './routes/movieRoutes.js';
 import authRoutes from './routes/authRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import postRoutes from './routes/postRoutes.js';
+import chatRoutes from './routes/chatRoutes.js';
 // import recomRoutes from './routes/recomRoutes.js';
 
 dotenv.config();
@@ -28,6 +29,7 @@ app.use('/api/movies', movieRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/posts', postRoutes);
+app.use('/api/chat', chatRoutes);
 // app.use('/api/recommendations', recomRoutes);
 
 // Error handling middleware
