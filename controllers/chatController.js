@@ -91,8 +91,10 @@ const chatController = {
             
             const contextMessage = {
                 role: 'system',
-                content: `User preferences: ${user.preferences}. Favorite movies: ${favoriteMovies}`
+                content: `User preferences: ${user.preferences}. User's Favorite movies: ${favoriteMovies}`
             };
+
+            console.log(favoriteMovies);
 
             const chatMessages = [
                 contextMessage,
@@ -109,8 +111,7 @@ const chatController = {
             await chat.save();
 
             res.json({
-                message: response.content,
-                chatHistory: chat.messages
+                message: response.content
             });
 
         } catch (error) {

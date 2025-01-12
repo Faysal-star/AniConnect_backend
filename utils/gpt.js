@@ -27,7 +27,7 @@ const ChatUtil = {
                 messages: [
                     {
                         role: "system",
-                        content: "You are a friendly movie expert who can discuss movies in detail. Keep responses concise and engaging. When recommending movies, explain why you think they'd enjoy it based on their preferences.As this is a chat , you should response in casual and friendly tone with short sentences."
+                        content: "You are a friendly movie expert who can discuss movies in detail.As this is a chat , you should response in casual and friendly tone with short sentences without any markdown or html format."
                     },
                     ...messages
                 ],
