@@ -106,6 +106,45 @@ const movieController = {
         } catch (error) {
             res.status(500).json({ message: 'Error adding movie to favorites', error: error.message });
         }
+    },
+
+    // Remove movie from favorites
+    removeFromFavorites: async (req, res) => {
+        try {
+            const { uid, movieId } = req.body;
+
+            if (!movieId) {
+                return res.status(400).json({ message: 'Movie ID is required' });
+            }
+
+            // Find user and remove movie from favorites
+            const user = await User.findOne({ uid });
+            
+            if (!user) {
+                return res.status(404).json({ message: 'User not found' });
+            }
+
+            console.log(user.favoriteMovies);
+
+            // Check if movie exists in favorites
+            const movieExists = user.favoriteMovies.some(movie => movie.id == movieId);
+            if (!movieExists) {
+                return res.status(400).json({ message: 'Movie not found in favorites' });
+            }
+
+            // Remove movie from favorites array
+            user.favoriteMovies = user.favoriteMovies.filter(movie => movie.id != movieId);
+            await user.save();
+
+            res.status(200).json({ 
+                message: 'Movie removed from favorites',
+            });
+        } catch (error) {
+            res.status(500).json({ 
+                message: 'Error removing movie from favorites', 
+                error: error.message 
+            });
+        }
     }
 };
 
