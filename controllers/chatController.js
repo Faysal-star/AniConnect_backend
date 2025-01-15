@@ -21,25 +21,19 @@ const chatController = {
                 comment: post.content
             }));
 
-            const contextMessage = {
-                role: 'system',
-                content: `
-                    Current Request: ${message}
-                    User Preferences: ${user.preferences}
-                    User's Favorite Movies: ${favoriteMovies.join(', ')}
-                    User's Movie Comments: ${moviePosts.map(p => `${p.title}: ${p.comment}`).join('; ')}
-                `
-            };
+            const prompt = `
+                User Message: ${message}
+                User Preferences: ${user.preferences}
+                User's Favorite Movies: ${favoriteMovies.join(', ')}
+                User's Movie Comments: ${moviePosts.map(p => `${p.title}: ${p.comment}`).join('; ')}
 
-            const chatMessages = [
-                contextMessage,
-                {
-                    role: 'user',
-                    content: message
-                }
-            ];
+                Based on this information, recommend 5 to 6 movies. 
+                Return ONLY a JSON array of movie titles, like this format:
+                ["Movie Title 1", "Movie Title 2", "Movie Title 3"]
+            `;
+            console.log(prompt);
 
-            let response = await ChatUtil.generateResponse(chatMessages);
+            let response = await ChatUtil.generateResponse(prompt);
             let movieList;
 
             try {
@@ -48,15 +42,13 @@ const chatController = {
                     throw new Error('Not an array');
                 }
             } catch (error) {
-                const retryMessages = [
-                    contextMessage,
-                    {
-                        role: 'user',
-                        content: `${message} - IMPORTANT: Return ONLY a valid JSON array of strings. Example: ["Movie 1", "Movie 2", "Movie 3"] No other text or formatting.`
-                    }
-                ];
-                
-                response = await ChatUtil.generateResponse(retryMessages);
+                const retryPrompt = `
+                    ${prompt}
+                    IMPORTANT: Return ONLY a valid JSON array of strings. 
+                    Example: ["Movie 1", "Movie 2", "Movie 3"]
+                    No other text or formatting.
+                `;
+                response = await ChatUtil.generateResponse(retryPrompt);
                 try {
                     movieList = JSON.parse(response.content);
                     if (!Array.isArray(movieList)) {
